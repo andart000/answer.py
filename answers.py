@@ -19,6 +19,6 @@ def try_except():
     try:
         ask_user()
     except KeyboardInterrupt:
-        print('Возвращайся скорее!')
+        print('Возвращайся скорее!!')
 if __name__ == '__main__':
     try_except()
