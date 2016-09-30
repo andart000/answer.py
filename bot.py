@@ -5,7 +5,7 @@ def start(bot, update):
 	bot.sendMessage(update.message.chat_id, text = 'Приветствую, смертный.')
 def talk_to_me(bot, update):
 	print('Новое сообщение: ' + update.message.text)
-	bot.sendMessage(update.message.chat_id, text = answers.try_except())
+	bot.sendMessage(update.message.chat_id, text = answers.get_answer(update.message.text, '!?.,:;[]{}()@$%*'))
 def run_bot():
 	updater = Updater('284809150:AAGI1-iIDOOihL0KGb7xFyjqTVE7tepfYbg')
 	dp = updater.dispatcher
