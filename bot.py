@@ -1,17 +1,14 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import answers
-
 def count_words(text):
     text = text.split(' ')
     return (len(text)-1)
 def count(bot, update):
     print('Подсчёт /count') 
     bot.sendMessage(update.message.chat_id, text = "Количество слов в предложении - %s" % count_words(update.message.text))
-
 def calc(bot, update):
     print('Рассчёт /calc')
     bot.sendMessage(update.message.chat_id, text = "Результат: %s" % do_calc(update.message.text))
-
 def do_calc(digits):
     digits = digits.split(' ')
     digits = digits[1]
@@ -38,7 +35,6 @@ def do_calc(digits):
                 return "Невозможно разделить на ноль"
     else:
         return "Необходим знак = в конце ввода"
-
 def start(bot, update):
     print('Вызван /start')
     bot.sendMessage(update.message.chat_id, text = 'Приветствую, смертный.')
