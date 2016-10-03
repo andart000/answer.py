@@ -11,30 +11,36 @@ def calc(bot, update):
     bot.sendMessage(update.message.chat_id, text = "Результат: %s" % do_calc(update.message.text))
 def do_calc(digits):
     digits = digits.split(' ')
-    digits = digits[1]
-    if '=' in digits:
-        digits = digits[:-1]
-        if '+' in digits:
-            digits = digits.split('+')
-            result = int(digits[0]) + int(digits[1])
-            return result
-        elif '-' in digits:
-            digits = digits.split('-')
-            result = int(digits[0]) - int(digits[1])
-            return result
-        elif '*' in digits:
-            digits = digits.split('*')
-            result = int(digits[0]) * int(digits[1])
-            return result
-        elif '/' in digits:
-            digits = digits.split('/')
-            try:
-                result = int(digits[0]) / int(digits[1])
-                return result
-            except ZeroDivisionError:
-                return "Невозможно разделить на ноль"
+    if len(digits) == 2:
+        if digits.isdigit() == True:
+            digits = digits[1]
+            if '=' in digits:
+                digits = digits[:-1]
+                if '+' in digits:
+                    digits = digits.split('+')
+                    result = int(digits[0]) + int(digits[1])
+                    return result
+                elif '-' in digits:
+                    digits = digits.split('-')
+                    result = int(digits[0]) - int(digits[1])
+                    return result
+                elif '*' in digits:
+                    digits = digits.split('*')
+                    result = int(digits[0]) * int(digits[1])
+                    return result
+                elif '/' in digits:
+                    digits = digits.split('/')
+                    try:
+                        result = int(digits[0]) / int(digits[1])
+                        return result
+                    except ZeroDivisionError:
+                        return "Невозможно разделить на ноль"
+            else:
+                return "Необходим знак = в конце ввода"
+        else:
+             return "Неверный формат входящих данных"   
     else:
-        return "Необходим знак = в конце ввода"
+        return "Неверный формат входящих данных"
 def start(bot, update):
     print('Вызван /start')
     bot.sendMessage(update.message.chat_id, text = 'Приветствую, смертный.')
