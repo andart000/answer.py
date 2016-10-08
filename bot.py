@@ -2,7 +2,6 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import answers
 import ephem
 numbers = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7, 'восемь': 8, 'девять': 9, 'и': '.'}
-
 def count_words(text):
     text = text.split(' ')
     return (len(text)-1)
