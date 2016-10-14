@@ -2,6 +2,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import answers
 import ephem
 from datetime import datetime, date, timedelta
+import csv
 numbers = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7, 'восемь': 8, 'девять': 9, 'и': '.'}
 def count_words(text):
     text = text.split(' ')
@@ -209,11 +210,15 @@ def start(bot, update):
 def talk_to_me(bot, update):
     print('Новое сообщение: ' + update.message.text)
     bot.sendMessage(update.message.chat_id, text = answers.get_answer(update.message.text, '!?.,:;[]{}()@$%*'))
-    with open('chatlog.txt', 'a', encoding = 'utf-8') as log:
-        log.write(str(datetime.now())+ "    ")
-        log.write(str(update.message.from_user.name) + "    ")
-        log.write(str(update.message.text) + "    ")
-        log.write(str(answers.get_answer(update.message.text, '!?.,:;[]{}()@$%*')) + "\n")
+    with open('chatlog.csv', 'a', encoding = 'utf-8') as log:
+        fields = ['datetime', 'user_name', 'message', 'answer']
+        writer = csv.DictWriter(log, fields, delimiter = ';')
+        header = "datetime;user_name;message;answer"
+        file = open('C:\projects\lesson1\\answer.py\chatlog.csv', 'r')
+        search = file.read()
+        if header not in search:
+            writer.writeheader()
+        writer.writerow({'datetime': str(datetime.now()), 'user_name': str(update.message.from_user.name), 'message': str(update.message.text), 'answer': str(answers.get_answer(update.message.text, '!?.,:;[]{}()@$%*'))})
 def run_bot():
     updater = Updater('284809150:AAGI1-iIDOOihL0KGb7xFyjqTVE7tepfYbg')
     dp = updater.dispatcher
