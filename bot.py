@@ -31,6 +31,27 @@ def word_calc(bot, update):
         log.write(str(update.message.from_user.name) + "    ")
         log.write(str(update.message.text) + "    ")
         log.write(str("Результат: %s" % do_word_calc(update.message.text)) + "\n")
+def new_born(bot, update):
+    print('новорожденные /new_born')
+    bot.sendMessage(update.message.chat_id, text = do_new_born(update.message.text))
+def do_new_born(input_date):
+    if "Наиболее популярные женские имена для новорожденных за " in input_date:
+        input_date = input_date.replace("/new_born Наиболее популярные женские имена для новорожденных за ", "")
+        input_date = input_date.split(" ")
+        year = str(input_date[1])
+        month = str(input_date[0])
+        with open('girl_names.csv', 'r', encoding='utf-8', newline='') as f:
+            fields = ["system_object_id","global_id","NumberOfPersons","Year","Month","Name","ID"]
+            reader = csv.DictReader(f, fields, delimiter=';')
+            count = 1
+            names = []
+            for row in reader:
+                if row['Year'] == year and row['Month'] == month and count < 6:
+                    names.append(row['Name'])
+                    count += 1
+            return ",".join(names)
+    else:
+        return "Неверный формат данных"
 def new_year(bot, update):
     print('НГ /new_year')
     bot.sendMessage(update.message.chat_id, text = do_new_year(update.message.text))
@@ -210,7 +231,7 @@ def start(bot, update):
 def talk_to_me(bot, update):
     print('Новое сообщение: ' + update.message.text)
     bot.sendMessage(update.message.chat_id, text = answers.get_answer(update.message.text, '!?.,:;[]{}()@$%*'))
-    with open('chatlog.csv', 'a', encoding = 'utf-8') as log:
+    with open('chatlog.csv', 'a', encoding = 'utf-8', newline='') as log:
         fields = ['datetime', 'user_name', 'message', 'answer']
         writer = csv.DictWriter(log, fields, delimiter = ';')
         header = "datetime;user_name;message;answer"
@@ -226,6 +247,7 @@ def run_bot():
     dp.add_handler(CommandHandler('calc', calc))
     dp.add_handler(CommandHandler('count', count))
     dp.add_handler(CommandHandler('word_calc', word_calc))
+    dp.add_handler(CommandHandler('new_born', new_born))
     dp.add_handler(CommandHandler('next_full_moon', next_full_moon))
     dp.add_handler(CommandHandler('new_year', new_year))
     dp.add_handler(MessageHandler([Filters.text], talk_to_me))
